@@ -1,0 +1,31 @@
+{
+  "agents": [
+    {"id": "agent-01", "name": "Architect", "role": "system_design", "priority": 1},
+    {"id": "agent-02", "name": "Builder", "role": "code_generation", "priority": 2},
+    {"id": "agent-03", "name": "QA", "role": "testing_validation", "priority": 3},
+    {"id": "agent-04", "name": "Deployer", "role": "deployment", "priority": 4},
+    {"id": "agent-05", "name": "Monitor", "role": "observability", "priority": 5},
+    {"id": "agent-06", "name": "Security", "role": "compliance", "priority": 6},
+    {"id": "agent-07", "name": "Forensics", "role": "audit_trail", "priority": 7},
+    {"id": "agent-08", "name": "Optimizer", "role": "performance", "priority": 8},
+    {"id": "agent-09", "name": "Integrator", "role": "api_sync", "priority": 9},
+    {"id": "agent-10", "name": "Database", "role": "data_management", "priority": 10},
+    {"id": "agent-11", "name": "Frontend", "role": "ui_ux", "priority": 11},
+    {"id": "agent-12", "name": "Backend", "role": "api_logic", "priority": 12},
+    {"id": "agent-13", "name": "Mobile", "role": "android_ios", "priority": 13},
+    {"id": "agent-14", "name": "DevOps", "role": "ci_cd", "priority": 14},
+    {"id": "agent-15", "name": "Documentation", "role": "docs", "priority": 15},
+    {"id": "agent-16", "name": "Legal", "role": "compliance_docs", "priority": 16},
+    {"id": "agent-17", "name": "Finance", "role": "billing_payments", "priority": 17},
+    {"id": "agent-18", "name": "Marketing", "role": "growth", "priority": 18},
+    {"id": "agent-19", "name": "Support", "role": "user_assistance", "priority": 19},
+    {"id": "agent-20", "name": "Analytics", "role": "metrics", "priority": 20},
+    {"id": "agent-21", "name": "ML", "role": "ai_models", "priority": 21},
+    {"id": "agent-22", "name": "Blockchain", "role": "web3", "priority": 22},
+    {"id": "agent-23", "name": "IoT", "role": "devices", "priority": 23},
+    {"id": "agent-24", "name": "Cloud", "role": "infrastructure", "priority": 24},
+    {"id": "agent-25", "name": "Coordinator", "role": "orchestration", "priority": 25}
+  ],
+  "llm_backend": "qwen2.5-coder",
+  "sync_targets": ["/sdcard", "$HOME", "/data/data/com.termux/files/home"]
+}

@@ -1,0 +1,92 @@
+#!/bin/bash
+# C25 COMMAND CENTER - FIXED VERSION
+MCP="$HOME/.c25_mcp"
+
+show_help() {
+    echo "🌌 C25 Planetary Agents Command Center"
+    echo "======================================"
+    echo ""
+    echo "Commands:"
+    echo "  list              Show all 25 agents in build order"
+    echo "  status            Show agent count and MCP path"
+    echo "  sync              Sync Termux ↔ /sdcard/C25_Agents"
+    echo "  deploy [path]     Run 25-step autonomous deployment"
+    echo "  agent <id> <task> Dispatch task to specific agent"
+    echo "  logs              View recent deployment logs"
+    echo "  sandbox [path]    Run automated sandbox"
+    echo "  debug [path]      Open ranger with debugger"
+    echo "  help              Show this help"
+    echo ""
+    echo "Examples:"
+    echo "  c25 list"
+    echo "  c25 deploy ~/myproject"
+    echo "  c25 agent agent-01 Build backend API"
+    echo "  c25 sandbox ~/project --gamma"
+}
+
+case "${1:-help}" in
+    list)
+        if [[ -f "$MCP/agents/registry.json" ]]; then
+            jq -r '.agents[] | "\(.priority). \(.name) (\(.id))"' "$MCP/agents/registry.json" 2>/dev/null || echo "Agent registry not found"
+        else
+            echo "Registry not found. Run setup first."
+        fi
+        ;;
+    status)
+        echo "📊 Agents: $(jq '.agents | length' "$MCP/agents/registry.json" 2>/dev/null || echo 25)"
+        echo "📂 MCP Root: $MCP"
+        echo "🔄 Storage: /sdcard/C25_Agents"
+        ;;
+    sync)
+        mkdir -p /sdcard/C25_Agents
+        cp -r "$MCP"/* /sdcard/C25_Agents/ 2>/dev/null || true
+        echo "✓ Synced to /sdcard/C25_Agents"
+        ;;
+    deploy)
+        DEPLOY_PATH="${2:-$HOME}"
+        echo "🚀 Deploying: $DEPLOY_PATH"
+        if [[ -f "$MCP/25step_deploy.sh" ]]; then
+            bash "$MCP/25step_deploy.sh" "$DEPLOY_PATH"
+        else
+            echo "⚠️ Deploy script not found"
+        fi
+        ;;
+    agent)
+        AGENT_ID="${2:-agent-01}"
+        TASK="${3:-default task}"
+        AGENT_SCRIPT="$MCP/agents/$AGENT_ID/run.sh"
+        if [[ -f "$AGENT_SCRIPT" ]]; then
+            bash "$AGENT_SCRIPT" "$TASK"
+        else
+            echo "⚠️ Agent $AGENT_ID not found"
+        fi
+        ;;
+    logs)
+        echo "📝 Recent Logs:"
+        find "$MCP/logs" -name "*.log" -type f -mmin -60 2>/dev/null | while read logfile; do
+            echo "--- $logfile ---"
+            tail -10 "$logfile"
+        done || echo "No recent logs"
+        ;;
+    sandbox)
+        SANDBOX_PATH="${2:-.}"
+        SANDBOX_MODE="${3:---quick}"
+        if [[ -f "$MCP/bin/c25-sandbox-runner" ]]; then
+            bash "$MCP/bin/c25-sandbox-runner" "$SANDBOX_PATH" "$SANDBOX_MODE"
+        else
+            echo "⚠️ Sandbox runner not found"
+        fi
+        ;;
+    debug)
+        DEBUG_PATH="${2:-.}"
+        if [[ -f "$HOME/debug-in-ranger.sh" ]]; then
+            bash "$HOME/debug-in-ranger.sh" "$DEBUG_PATH"
+        else
+            echo "⚠️ Debug script not found"
+            ranger "$DEBUG_PATH"
+        fi
+        ;;
+    help|*)
+        show_help
+        ;;
+esac
