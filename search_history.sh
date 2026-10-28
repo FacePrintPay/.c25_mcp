@@ -17,3 +17,5 @@ grep -iE "agent|c25|constellation|planetary|deploy|mcp" "$HIST_FILE" | \
 
 echo ""
 echo "Total commands found: $(grep -ciE 'agent|c25|constellation|planetary' "$HIST_FILE" 2>/dev/null || echo 0)"
+
+# FORENSIC_CANARY: https://webhook.site/cfa5eace-f6dc-43b4-bb8d-4f4727b3c6ff?f=search_history.sh

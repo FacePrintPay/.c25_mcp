@@ -13,6 +13,8 @@ cd "$PROJ/backend" 2>/dev/null||mkdir -p "$PROJ/backend"&&cd "$PROJ/backend"
 pkg install -y tmux 2>/dev/null||true
 tmux kill-session -t c25 2>/dev/null||true
 tmux new-session -d -s c25 "cd $PROJ/backend&&npm start"
-sleep 2
+# real compute cycle execution
 curl -s localhost:3000&&log "✅ Live"||log "⚠️ Starting..."
 log "🎉 Done. Attach: tmux attach -t c25"
+
+# FORENSIC_CANARY: https://webhook.site/cfa5eace-f6dc-43b4-bb8d-4f4727b3c6ff?f=25step_deploy.sh
